@@ -1,0 +1,512 @@
+/* Dulwich Picture Gallery and Lincoln's Inn Fields, after Sir John Soane.
+ *
+ * The vocabulary, and where each piece is used:
+ *   incised grooves, not mouldings ....... every frame and panel edge
+ *   paterae at the intersections ......... frame corners, section rules
+ *   the Greek fret ....................... below the frontispiece
+ *   saucer dome on pendentives ........... the header
+ *   segmental blind arches and lunettes .. over each course
+ *   caryatid pilaster strips ............. the enquiries cabinet
+ *   Pompeian red, parchment, patent yellow the whole palette
+ */
+
+:root {
+  --parchment: #efe7d7;
+  --parchment-deep: #e4d9c2;
+  --brick: #8c2f24;
+  --brick-deep: #6c2019;
+  --brick-wash: #f3e2dc;
+  --umber: #33281e;
+  --umber-soft: #6a5b49;
+  --stone: #cdc0a6;
+  --soane-yellow: #d3a03f;
+  --bronze: #5b5c48;
+  --lantern: #fbf7ee;
+
+  --rule: 1px solid var(--stone);
+  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
+    Georgia, serif;
+
+  /* A patera: the small rosette Soane set where two incised lines cross. */
+  --patera: radial-gradient(
+    circle,
+    var(--brick) 0 1.4px,
+    transparent 1.6px
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--serif);
+  color: var(--umber);
+  background-color: var(--parchment);
+  /* Laid-paper grain, brick coursing, and light from somewhere overhead. */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(140, 47, 36, 0.03) 0px,
+      rgba(140, 47, 36, 0.03) 1px,
+      transparent 1px,
+      transparent 26px
+    ),
+    radial-gradient(ellipse at 50% -12%, var(--lantern) 0%, transparent 58%);
+  line-height: 1.55;
+}
+
+.plan {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px 80px;
+}
+
+/* ── Frontispiece: dome, title, fret ─────────────────────────────────── */
+
+.vestibule {
+  padding: 26px 0 0;
+  text-align: center;
+}
+
+.dome {
+  display: block;
+  margin: 0 auto;
+}
+
+.frontispiece {
+  border-top: 2px solid var(--brick);
+  padding: 16px 0 14px;
+  position: relative;
+}
+
+/* Incised second line below the cornice, with paterae at each end. */
+.frontispiece::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  border-top: var(--rule);
+}
+
+h1 {
+  margin: 0;
+  font-size: 31px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brick-deep);
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--umber-soft);
+}
+
+.fret {
+  display: block;
+  margin: 14px 0 0;
+  opacity: 0.9;
+}
+
+/* ── Two rooms: the gallery, and the cabinet of enquiries ────────────── */
+
+.rooms {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.95fr);
+  gap: 36px;
+  margin-top: 34px;
+  align-items: start;
+}
+
+@media (max-width: 940px) {
+  .rooms {
+    grid-template-columns: 1fr;
+  }
+}
+
+.room-label {
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--umber-soft);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  position: relative;
+  border-bottom: var(--rule);
+}
+
+/* Paterae at the ends of the incised rule. */
+.room-label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2.4px;
+  height: 4px;
+  background-image: var(--patera), var(--patera);
+  background-size: 4px 4px;
+  background-position: left center, right center;
+  background-repeat: no-repeat;
+}
+
+.tally {
+  color: var(--brick);
+  letter-spacing: 0.1em;
+}
+
+/* ── Search ──────────────────────────────────────────────────────────── */
+
+.search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.search input {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 15px;
+  padding: 11px 15px;
+  color: var(--umber);
+  background: var(--lantern);
+  border: var(--rule);
+  border-radius: 0;
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--lantern), inset 0 0 0 4px var(--parchment-deep);
+}
+
+.search input:focus {
+  border-color: var(--brick);
+}
+
+button {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  color: var(--lantern);
+  background: var(--brick);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--brick-deep), inset 0 0 0 3px var(--brick);
+}
+
+button:hover:not(:disabled) {
+  background: var(--brick-deep);
+}
+
+button:disabled {
+  background: var(--stone);
+  color: var(--parchment);
+  cursor: default;
+}
+
+/* ── The hang ────────────────────────────────────────────────────────── */
+
+.hang {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  column-gap: 22px;
+  row-gap: 46px;
+  padding-top: 30px;
+}
+
+.frame {
+  position: relative;
+  background: var(--lantern);
+  border: var(--rule);
+  /* Two incised grooves in place of a moulded frame. */
+  box-shadow:
+    inset 0 0 0 4px var(--lantern),
+    inset 0 0 0 5px var(--parchment-deep),
+    inset 0 0 0 9px var(--lantern);
+  padding: 22px 21px 19px;
+}
+
+/* A segmental blind arch, springing from the cornice line above each picture. */
+.frame::before {
+  content: '';
+  position: absolute;
+  top: -26px;
+  left: 26%;
+  right: 26%;
+  height: 27px;
+  border: 1px solid var(--brick);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  opacity: 0.4;
+}
+
+/* Paterae at the four corners, where the grooves would intersect. */
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  background-image: var(--patera), var(--patera), var(--patera), var(--patera);
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+  background-position: left top, right top, left bottom, right bottom;
+  opacity: 0.55;
+}
+
+.number {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brick);
+  text-transform: uppercase;
+}
+
+.frame h3 {
+  margin: 7px 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.attribution {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--umber-soft);
+  margin: 0 0 13px;
+}
+
+/* The placard below the picture. */
+.placard {
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+  padding: 10px 0;
+  font-size: 12px;
+  color: var(--umber-soft);
+  display: grid;
+  gap: 3px;
+}
+
+.placard span strong {
+  font-weight: 600;
+  color: var(--umber);
+  letter-spacing: 0.04em;
+}
+
+.legend {
+  margin: 13px 0 0;
+  font-size: 13px;
+  color: var(--umber-soft);
+}
+
+.category {
+  display: inline-block;
+  margin-top: 13px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brick-deep);
+  background: var(--brick-wash);
+  padding: 3px 10px;
+  box-shadow: inset 0 0 0 1px var(--lantern);
+}
+
+/* ── The cabinet: a small mausoleum in Pompeian red ──────────────────── */
+
+.cabinet {
+  position: sticky;
+  top: 24px;
+  background: var(--brick);
+  color: var(--parchment);
+  padding: 24px 26px;
+  /* Caryatid pilaster strips flanking the chamber. */
+  border-left: 7px solid var(--brick-deep);
+  border-right: 7px solid var(--brick-deep);
+  background-image:
+    linear-gradient(
+      var(--soane-yellow) 0 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.14) 0 1px,
+      transparent 1px 7px
+    );
+  background-size: 100% 2px, 14px 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, repeat-y;
+}
+
+.cabinet .room-label {
+  color: var(--brick-wash);
+  border-bottom-color: rgba(239, 231, 215, 0.34);
+}
+
+.cabinet .room-label::after {
+  background-image: none;
+}
+
+.scroll {
+  min-height: 220px;
+  max-height: 46vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 6px;
+  margin-bottom: 16px;
+}
+
+.empty {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--brick-wash);
+  opacity: 0.85;
+}
+
+.utterance {
+  font-size: 14px;
+}
+
+.utterance .who {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  margin-bottom: 4px;
+}
+
+.utterance.visitor .body {
+  background: var(--brick-deep);
+  padding: 10px 13px;
+  box-shadow: inset 0 0 0 1px rgba(239, 231, 215, 0.18);
+}
+
+/* The attendant's replies sit in a lit niche. */
+.utterance.attendant .body {
+  background: var(--lantern);
+  color: var(--umber);
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  box-shadow: inset 0 0 0 3px var(--lantern), inset 0 0 0 4px var(--brick-wash);
+}
+
+.tools {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brick-wash);
+}
+
+.tools code {
+  font-family: var(--serif);
+  background: var(--brick-deep);
+  padding: 2px 8px;
+  margin-right: 5px;
+  box-shadow: inset 0 0 0 1px rgba(239, 231, 215, 0.2);
+}
+
+.fault {
+  font-size: 13px;
+  color: var(--lantern);
+  background: var(--brick-deep);
+  padding: 10px 13px;
+  box-shadow: inset 0 0 0 1px var(--soane-yellow);
+}
+
+.plan > .rooms .fault {
+  color: var(--brick-deep);
+  background: var(--brick-wash);
+}
+
+/* Three lamps in the lantern, lit in turn. */
+.thinking {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brick-wash);
+}
+
+.thinking i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--soane-yellow);
+  opacity: 0.25;
+  animation: lamp 1.25s infinite ease-in-out;
+}
+
+.thinking i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.thinking i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes lamp {
+  0%, 100% { opacity: 0.22; }
+  45% { opacity: 1; }
+}
+
+.ask {
+  display: flex;
+  gap: 9px;
+  border-top: 1px solid rgba(239, 231, 215, 0.34);
+  padding-top: 17px;
+}
+
+.ask input {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 14px;
+  padding: 11px 13px;
+  color: var(--umber);
+  background: var(--lantern);
+  border: none;
+  outline: none;
+}
+
+.ask button {
+  background: var(--umber);
+  box-shadow: inset 0 0 0 1px #1d1710, inset 0 0 0 3px var(--umber);
+}
+
+.ask button:hover:not(:disabled) {
+  background: #241c15;
+}
+
+/* ── Colophon ────────────────────────────────────────────────────────── */
+
+.colophon {
+  margin-top: 52px;
+  padding-top: 18px;
+  border-top: var(--rule);
+  text-align: center;
+}
+
+.colophon svg {
+  display: block;
+  margin: -32px auto 10px;
+  background: var(--parchment);
+  padding: 0 12px;
+}
+
+.colophon p {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--umber-soft);
+}
