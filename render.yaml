@@ -1,0 +1,25 @@
+# Render Blueprint: one repo -> two services, per the Lecture 8 slides.
+# Secrets are marked sync: false, so Render asks for them instead of reading this file.
+services:
+  - type: web
+    name: yale-som-courses-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORTKEY_API_KEY
+        sync: false
+
+  - type: web
+    name: yale-som-courses-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # The backend's public URL, e.g. https://yale-som-courses-backend.onrender.com
+      - key: VITE_API_URL
+        sync: false
