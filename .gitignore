@@ -16,6 +16,7 @@ dist/
 
 # local data / OS
 *.db
+!data/mgt409.db
 .DS_Store
 Thumbs.db
 
